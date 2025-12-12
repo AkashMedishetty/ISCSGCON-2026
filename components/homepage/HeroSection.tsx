@@ -37,67 +37,75 @@ export function HeroSection() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     
-    // Wait for DOM to be ready
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: '+=100%',
-          scrub: 0.8,
-          pin: true,
-        },
-      });
+    // Only run scroll animation on desktop (md breakpoint = 768px)
+    const isDesktop = window.innerWidth >= 768;
+    if (!isDesktop) return;
+    
+    // Small delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      const ctx = gsap.context(() => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top top',
+            end: '+=100%',
+            scrub: 0.8,
+            pin: true,
+          },
+        });
 
-      // Fade out hero content
-      tl.to(heroContentRef.current, {
-        opacity: 0,
-        y: -30,
-        duration: 0.4,
-      }, 0);
+        // Fade out hero content
+        tl.to(heroContentRef.current, {
+          opacity: 0,
+          y: -30,
+          duration: 0.4,
+        }, 0);
 
-      // Move orb to left (no scale change)
-      tl.to(orbRef.current, {
-        x: '-28vw',
-        duration: 0.6,
-      }, 0);
+        // Move orb to left (no scale change)
+        tl.to(orbRef.current, {
+          x: '-28vw',
+          duration: 0.6,
+        }, 0);
 
-      // Move vertical crosshair with orb
-      tl.to(crosshairVRef.current, {
-        x: '-28vw',
-        duration: 0.6,
-      }, 0);
+        // Move vertical crosshair with orb
+        tl.to(crosshairVRef.current, {
+          x: '-28vw',
+          duration: 0.6,
+        }, 0);
 
-      // Fade horizontal crosshair
-      tl.to(crosshairHRef.current, {
-        opacity: 0,
-        duration: 0.3,
-      }, 0);
+        // Fade horizontal crosshair
+        tl.to(crosshairHRef.current, {
+          opacity: 0,
+          duration: 0.3,
+        }, 0);
 
-      // Parallax blobs
-      tl.to(blob1Ref.current, {
-        y: -60,
-        x: -30,
-        scale: 1.1,
-        duration: 0.6,
-      }, 0);
+        // Parallax blobs
+        tl.to(blob1Ref.current, {
+          y: -60,
+          x: -30,
+          scale: 1.1,
+          duration: 0.6,
+        }, 0);
 
-      tl.to(blob2Ref.current, {
-        y: 50,
-        x: 20,
-        scale: 0.85,
-        duration: 0.6,
-      }, 0);
+        tl.to(blob2Ref.current, {
+          y: 50,
+          x: 20,
+          scale: 0.85,
+          duration: 0.6,
+        }, 0);
 
-      // Fade in welcome content
-      tl.fromTo(welcomeRef.current, 
-        { opacity: 0, x: 60 },
-        { opacity: 1, x: 0, duration: 0.5 },
-        0.15
-      );
-    }, sectionRef);
+        // Fade in welcome content
+        tl.fromTo(welcomeRef.current, 
+          { opacity: 0, x: 60 },
+          { opacity: 1, x: 0, duration: 0.5 },
+          0.15
+        );
+      }, sectionRef);
 
-    return () => ctx.revert();
+      return () => ctx.revert();
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
