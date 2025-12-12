@@ -1,13 +1,18 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const HeroSection = dynamic(
   () => import('@/components/homepage/HeroSection'),
-  { ssr: false }
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="min-h-screen w-full" style={{ backgroundColor: '#b8c8d8' }} />
+    ),
+  }
 );
 
 const PricingSection = dynamic(
@@ -89,12 +94,37 @@ function MobileWelcomeSection() {
 }
 
 export default function Home() {
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
-    document.documentElement.style.scrollBehavior = 'smooth';
+    // Force scroll to top immediately
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
+    
+    setMounted(true);
+    
+    // Set smooth scrolling after initial position is set
+    const timer = setTimeout(() => {
+      document.documentElement.style.scrollBehavior = 'smooth';
+    }, 200);
+    
     return () => {
+      clearTimeout(timer);
       document.documentElement.style.scrollBehavior = 'auto';
     };
   }, []);
+
+  // Show loading placeholder until mounted
+  if (!mounted) {
+    return (
+      <main className="relative overflow-x-hidden bg-[#b8c8d8]">
+        <div className="min-h-screen w-full" style={{ backgroundColor: '#b8c8d8' }} />
+      </main>
+    );
+  }
 
   return (
     <main className="relative overflow-x-hidden bg-[#b8c8d8]">
