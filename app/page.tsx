@@ -1,49 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-const HeroSection = dynamic(
-  () => import('@/components/homepage/HeroSection'),
-  { 
-    ssr: false,
-    loading: () => (
-      <div className="min-h-screen w-full" style={{ backgroundColor: '#b8c8d8' }} />
-    ),
-  }
-);
-
-const PricingSection = dynamic(
-  () => import('@/components/homepage/PricingSection'),
-  { ssr: false }
-);
-
-const CommitteeSection = dynamic(
-  () => import('@/components/homepage/CommitteeSection'),
-  { ssr: false }
-);
-
-const ExploreHyderabadSection = dynamic(
-  () => import('@/components/homepage/ExploreHyderabadSection'),
-  { ssr: false }
-);
-
-const CTASection = dynamic(
-  () => import('@/components/homepage/CTASection'),
-  { ssr: false }
-);
-
-const FooterSection = dynamic(
-  () => import('@/components/homepage/FooterSection'),
-  { ssr: false }
-);
-
-// Register GSAP plugins
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { useEffect } from 'react';
+import { HeroSection } from '@/components/homepage/HeroSection';
+import { PricingSection } from '@/components/homepage/PricingSection';
+import { CommitteeSection } from '@/components/homepage/CommitteeSection';
+import { ExploreHyderabadSection } from '@/components/homepage/ExploreHyderabadSection';
+import { CTASection } from '@/components/homepage/CTASection';
+import { FooterSection } from '@/components/homepage/FooterSection';
 
 // Mobile Welcome Section Component
 function MobileWelcomeSection() {
@@ -94,37 +57,10 @@ function MobileWelcomeSection() {
 }
 
 export default function Home() {
-  const [mounted, setMounted] = useState(false);
-
   useEffect(() => {
-    // Force scroll to top immediately
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    }
-    
-    setMounted(true);
-    
-    // Set smooth scrolling after initial position is set
-    const timer = setTimeout(() => {
-      document.documentElement.style.scrollBehavior = 'smooth';
-    }, 200);
-    
-    return () => {
-      clearTimeout(timer);
-      document.documentElement.style.scrollBehavior = 'auto';
-    };
+    // Scroll to top on mount
+    window.scrollTo(0, 0);
   }, []);
-
-  // Show loading placeholder until mounted
-  if (!mounted) {
-    return (
-      <main className="relative overflow-x-hidden bg-[#b8c8d8]">
-        <div className="min-h-screen w-full" style={{ backgroundColor: '#b8c8d8' }} />
-      </main>
-    );
-  }
 
   return (
     <main className="relative overflow-x-hidden bg-[#b8c8d8]">
