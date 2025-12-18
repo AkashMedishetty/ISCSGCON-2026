@@ -48,6 +48,7 @@ const scopeOfStemCells = [
   { title: 'NEUROLOGY', items: ['Neural Repair', 'Stroke Recovery', 'Spinal Regeneration'] },
   { title: 'DENTISTRY', items: ['Pulp Regeneration', 'Periodontal Repair', 'Bone Grafting'] },
   { title: 'ENT', items: ['Airway Reconstruction', 'Hearing Restoration', 'Cartilage Repair'] },
+  { title: 'REPRODUCTIVE MEDICINE', items: ['Male Infertility', 'Female Infertility', 'Erectile Dysfunction'] },
 ];
 
 export function PricingSection() {
